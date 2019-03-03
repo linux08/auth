@@ -2,3 +2,5 @@ set up project with dep --- dep init
 https://golang.github.io/dep/docs/new-project.html
 
 "github.com/joho/godotenv" -- to import environmental variables
+
+to add a dep ensure -add github.com/gorilla/mux
