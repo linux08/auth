@@ -19,9 +19,6 @@ func main() {
 	fmt.Println(e)
 
 	port := os.Getenv("PORT")
-	fmt.Println(port)
-
-	// utils.ConnectDB()
 
 	// Handle routes
 	http.Handle("/", routes.Handlers())

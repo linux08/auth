@@ -4,7 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-//User model declaration
+//User struct declaration
 type User struct {
 	gorm.Model
 
