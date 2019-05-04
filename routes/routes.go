@@ -2,7 +2,7 @@ package routes
 
 import (
 	"auth/controllers"
-	"expense/utils/auth"
+	"auth/utils/auth"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -11,22 +11,25 @@ import (
 func Handlers() *mux.Router {
 
 	r := mux.NewRouter().StrictSlash(true)
-	r.Use(commonMiddleware)
-	r.Use(auth.JwtVerify)
+	r.Use(CommonMiddleware)
 
+	r.HandleFunc("/", controllers.TestAPI).Methods("GET")
 	r.HandleFunc("/api", controllers.TestAPI).Methods("GET")
-	r.HandleFunc("/api/register", controllers.CreateUser).Methods("POST")
-	r.HandleFunc("/api/login", controllers.Login).Methods("POST")
-	r.HandleFunc("/api/user", controllers.FetchUsers).Methods("GET")
+	r.HandleFunc("/register", controllers.CreateUser).Methods("POST")
+	r.HandleFunc("/login", controllers.Login).Methods("POST")
 
-	r.HandleFunc("/api/user/{id}", controllers.GetUser).Methods("GET")
-	r.HandleFunc("/api/user/{id}", controllers.UpdateUser).Methods("PUT")
-	r.HandleFunc("/api/user/{id}", controllers.DeleteUser).Methods("DELETE")
+	// Auth route
+	s := r.PathPrefix("/auth").Subrouter()
+	s.Use(auth.JwtVerify)
+	s.HandleFunc("/user", controllers.FetchUsers).Methods("GET")
+	s.HandleFunc("/user/{id}", controllers.GetUser).Methods("GET")
+	s.HandleFunc("/user/{id}", controllers.UpdateUser).Methods("PUT")
+	s.HandleFunc("/user/{id}", controllers.DeleteUser).Methods("DELETE")
 	return r
 }
 
-//set content-type
-func commonMiddleware(next http.Handler) http.Handler {
+// CommonMiddleware --Set content-type
+func CommonMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")

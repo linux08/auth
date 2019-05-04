@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"auth/models"
+	"auth/utils"
 	"encoding/json"
-	"expense/utils"
 	"fmt"
 	"net/http"
 	"time"
@@ -33,7 +33,7 @@ func TestAPI(w http.ResponseWriter, r *http.Request) {
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	user := &models.User{}
-	err := json.NewDecoder(r.Body).Decode(user) //decode the request body into struct and failed if any error occur
+	err := json.NewDecoder(r.Body).Decode(user)
 	if err != nil {
 		var resp = map[string]interface{}{"status": false, "message": "Invalid request"}
 		json.NewEncoder(w).Encode(resp)
@@ -80,7 +80,7 @@ func FindOne(email, password string) map[string]interface{} {
 	return resp
 }
 
-//CreateUser function
+//CreateUser function -- create a new user
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	user := &models.User{}
@@ -90,7 +90,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 		err := ErrorResponse{
-			Err: "Password validation failed",
+			Err: "Password Encryption  failed",
 		}
 		json.NewEncoder(w).Encode(err)
 	}

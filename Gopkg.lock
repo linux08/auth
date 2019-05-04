@@ -18,9 +18,12 @@
   version = "v1.7.0"
 
 [[projects]]
-  digest = "1:d4e6e8584d0a94ce567d237e19192dae44d57d2767ac7e1d7fbf5626d176381a"
+  digest = "1:7e63b12cdd7bef2c411d736cb67e28134d39f5d236aa1bfb8f3d55e3ad709eca"
   name = "github.com/jinzhu/gorm"
-  packages = ["."]
+  packages = [
+    ".",
+    "dialects/postgres",
+  ]
   pruneopts = "UT"
   revision = "472c70caa40267cb89fd8facb07fe6454b578626"
   version = "v1.9.2"
@@ -42,6 +45,19 @@
   version = "v1.3.0"
 
 [[projects]]
+  digest = "1:0e06e487551e2f9e0d6967a15c42223354e37c2e9869b301b14a42e4b51ea3e0"
+  name = "github.com/lib/pq"
+  packages = [
+    ".",
+    "hstore",
+    "oid",
+    "scram",
+  ]
+  pruneopts = "UT"
+  revision = "bc6a3c0594130b1e34005880bc600b6d3f49fa7f"
+  version = "v1.1.1"
+
+[[projects]]
   branch = "master"
   digest = "1:9d5b5d543996dd584da1db1e0de1926f3e4c3a8dba0fa2f8db70f3ebee2342e0"
   name = "golang.org/x/crypto"
@@ -59,6 +75,7 @@
     "github.com/dgrijalva/jwt-go",
     "github.com/gorilla/mux",
     "github.com/jinzhu/gorm",
+    "github.com/jinzhu/gorm/dialects/postgres",
     "github.com/joho/godotenv",
     "golang.org/x/crypto/bcrypt",
   ]

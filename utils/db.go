@@ -1,39 +1,48 @@
-// package utils
+package utils
 
-// import (
-// 	"expense/models"
-// 	"fmt"
-// 	"os"
+import (
+	"auth/models"
+	"fmt"
+	"log"
+	"os"
 
-// 	"github.com/jinzhu/gorm"
-// 	_ "github.com/jinzhu/gorm/dialects/postgres"
-// 	"github.com/joho/godotenv"
-// )
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres" //Gorm postgres dialect interface
+	"github.com/joho/godotenv"
+)
 
-// //ConnectDB function
-// func ConnectDB() *gorm.DB {
-// 	godotenv.Load()
-// 	username := os.Getenv("db_user")
-// 	password := os.Getenv("db_pass")
-// 	dbName := os.Getenv("db_name")
-// 	dbHost := os.Getenv("db_host")
+//ConnectDB function: Make database connection
+func ConnectDB() *gorm.DB {
 
-// 	dbURI := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, username, dbName, password) //Build connection string
+	//Load environmenatal variables
+	err := godotenv.Load()
 
-// 	//if database doesnt exist create it manually first
-// 	db, err := gorm.Open("postgres", dbURI)
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
-// 	// Migrate the schema
-// 	db.AutoMigrate(
-// 		&models.Expense{},
-// 		&models.User{})
+	username := os.Getenv("databaseUser")
+	password := os.Getenv("databasePassword")
+	databaseName := os.Getenv("databaseName")
+	databaseHost := os.Getenv("databaseHost")
 
-// 	//close db when not in use
-// 	// defer db.Close()
-// 	if err != nil {
-// 		fmt.Println("error=%s", err)
-// 	}
+	//Define DB connection string
+	dbURI := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", databaseHost, username, databaseName, password)
 
-// 	fmt.Println("connection=%s", db)
-// 	return db
-// }
+	//connect to db URI
+	db, err := gorm.Open("postgres", dbURI)
+
+	if err != nil {
+		fmt.Println("error", err)
+		panic(err)
+	}
+	// close db when not in use
+	// defer db.Close()
+
+	// Migrate the schema
+	db.AutoMigrate(
+		&models.User{})
+
+	fmt.Println("Successfully connected!", db)
+	return db
+}
