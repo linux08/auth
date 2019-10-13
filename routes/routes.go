@@ -22,10 +22,14 @@ func Handlers() *mux.Router {
 	s := r.PathPrefix("/auth").Subrouter()
 	s.Use(auth.JwtVerify)
 	s.HandleFunc("/me", controllers.Me).Methods("GET")
-	s.HandleFunc("/user", controllers.FetchUsers).Methods("GET")
-	s.HandleFunc("/user/{id}", controllers.GetUser).Methods("GET")
-	s.HandleFunc("/user/{id}", controllers.UpdateUser).Methods("PUT")
-	s.HandleFunc("/user/{id}", controllers.DeleteUser).Methods("DELETE")
+
+	// Admin route
+	a := r.PathPrefix("/admin").Subrouter()
+	a.Use(auth.JwtVerifyAdmin)
+	a.HandleFunc("/user", controllers.FetchUsers).Methods("GET")
+	a.HandleFunc("/user/{id}", controllers.GetUser).Methods("GET")
+	a.HandleFunc("/user/{id}", controllers.UpdateUser).Methods("PUT")
+	a.HandleFunc("/user/{id}", controllers.DeleteUser).Methods("DELETE")
 	return r
 }
 
