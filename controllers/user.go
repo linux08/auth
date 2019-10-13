@@ -106,6 +106,12 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(createdUser)
 }
 
+//Get the connected user data
+func Me(w http.ResponseWriter, r *http.Request) {
+	user := r.Context().Value("user")
+	json.NewEncoder(w).Encode(user)
+}
+
 //FetchUser function
 func FetchUsers(w http.ResponseWriter, r *http.Request) {
 	var users []models.User
