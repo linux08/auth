@@ -12,4 +12,5 @@ type User struct {
 	Email    string `gorm:"type:varchar(100);unique_index"`
 	Gender   string `json:"Gender"`
 	Password string `json:"Password"`
+	Role 	 string `json:"Role"`
 }

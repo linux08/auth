@@ -62,6 +62,7 @@ func FindOne(email, password string) map[string]interface{} {
 		UserID: user.ID,
 		Name:   user.Name,
 		Email:  user.Email,
+		Role: user.Role,
 		StandardClaims: &jwt.StandardClaims{
 			ExpiresAt: expiresAt,
 		},
@@ -96,7 +97,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user.Password = string(pass)
-
+	user.Role = "basic"
+	
 	createdUser := db.Create(user)
 	var errMessage = createdUser.Error
 
@@ -104,6 +106,12 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(errMessage)
 	}
 	json.NewEncoder(w).Encode(createdUser)
+}
+
+//Get the connected user data
+func Me(w http.ResponseWriter, r *http.Request) {
+	user := r.Context().Value("user")
+	json.NewEncoder(w).Encode(user)
 }
 
 //FetchUser function
