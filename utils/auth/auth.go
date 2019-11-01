@@ -4,6 +4,7 @@ import (
 	"auth/models"
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -69,13 +70,13 @@ func JwtVerifyAdmin(next http.Handler) http.Handler {
 			json.NewEncoder(w).Encode(Exception{Message: err.Error()})
 			return
 		}
-		
+
 		//&{1 tariq tariq.riahi@gmail.com 0xc000210f60}
 		fmt.Println(tk)
-		if (tk.Role == "basic") {
+		if tk.Role == "basic" {
 			w.WriteHeader(http.StatusForbidden)
 			json.NewEncoder(w).Encode(Exception{Message: "You are not allowed to be here."})
-		} else if (tk.Role == "admin") {
+		} else if tk.Role == "admin" {
 			//Check the context here
 			ctx := context.WithValue(r.Context(), "user", tk)
 			next.ServeHTTP(w, r.WithContext(ctx))
@@ -83,6 +84,6 @@ func JwtVerifyAdmin(next http.Handler) http.Handler {
 			w.WriteHeader(http.StatusForbidden)
 			json.NewEncoder(w).Encode(Exception{Message: "You are not allowed to be here."})
 		}
-		
+
 	})
 }
